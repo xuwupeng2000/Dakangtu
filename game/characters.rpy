@@ -12,7 +12,7 @@ define lx = Character("LX",
 define jack = Character("Jack", color="#d4d4d4")
 
 # AMI - Act 2 女主角
-define ami = Character("AMI", color="#88cc88")
+define ami = Character("Ami", color="#88cc88")
 
 # 旁白 (使用 Ren'Py 内置 narrator 时显式 define 以便统一管理)
 define narrator = Character(None, what_color="#cccccc")

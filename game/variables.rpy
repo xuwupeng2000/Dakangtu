@@ -5,6 +5,9 @@
 default ami_love = 0
 default jack_love = 0
 
+# 第三幕好感。进章时会清零。≥3 且选择告诉他，才进最好结局。
+default act3_love = 0
+
 # 玩家名字
 default player_name = "杰克"
 

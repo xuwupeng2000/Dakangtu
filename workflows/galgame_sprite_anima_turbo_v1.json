@@ -1,0 +1,159 @@
+{
+  "last_node_id": 9,
+  "last_link_id": 9,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [-720, 40],
+      "size": [340, 90],
+      "inputs": [],
+      "outputs": [
+        { "name": "MODEL", "type": "MODEL", "links": [1] }
+      ],
+      "properties": { "Node name for S&R": "UNETLoader" },
+      "widgets_values": ["anima-turbo-v1.1.safetensors", "default"],
+      "class_type": "UNETLoader"
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [-720, 180],
+      "size": [340, 110],
+      "inputs": [],
+      "outputs": [
+        { "name": "CLIP", "type": "CLIP", "links": [2, 3] }
+      ],
+      "properties": { "Node name for S&R": "CLIPLoader" },
+      "widgets_values": ["qwen_3_06b_base.safetensors", "qwen_image"],
+      "class_type": "CLIPLoader"
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [-720, 340],
+      "size": [340, 80],
+      "inputs": [],
+      "outputs": [
+        { "name": "VAE", "type": "VAE", "links": [4] }
+      ],
+      "properties": { "Node name for S&R": "VAELoader" },
+      "widgets_values": ["qwen_image_vae.safetensors"],
+      "class_type": "VAELoader"
+    },
+    {
+      "id": 4,
+      "type": "CLIPTextEncode",
+      "pos": [-320, 20],
+      "size": [440, 220],
+      "inputs": [
+        { "name": "clip", "type": "CLIP", "link": 2, "slot_index": 0 }
+      ],
+      "outputs": [
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [5] }
+      ],
+      "properties": { "Node name for S&R": "CLIPTextEncode" },
+      "widgets_values": [
+        "masterpiece, best quality, score_7, anime, 2D galgame character sprite, one girl, upper body, looking at viewer, gentle smile, long black hair, brown eyes, mustard-yellow coat, plain light gray background, clean lineart"
+      ],
+      "class_type": "CLIPTextEncode"
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [-320, 280],
+      "size": [440, 160],
+      "inputs": [
+        { "name": "clip", "type": "CLIP", "link": 3, "slot_index": 0 }
+      ],
+      "outputs": [
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [6] }
+      ],
+      "properties": { "Node name for S&R": "CLIPTextEncode" },
+      "widgets_values": [
+        "bad quality, worst quality, low quality, score_1, score_2, score_3, blurry, jpeg artifacts, extra fingers, bad hands, multiple girls, scenery, text, watermark, photorealistic, 3d"
+      ],
+      "class_type": "CLIPTextEncode"
+    },
+    {
+      "id": 6,
+      "type": "EmptyLatentImage",
+      "pos": [-320, 490],
+      "size": [320, 110],
+      "inputs": [],
+      "outputs": [
+        { "name": "LATENT", "type": "LATENT", "links": [7] }
+      ],
+      "properties": { "Node name for S&R": "EmptyLatentImage" },
+      "widgets_values": [768, 1152, 1],
+      "class_type": "EmptyLatentImage"
+    },
+    {
+      "id": 7,
+      "type": "KSampler",
+      "pos": [200, 140],
+      "size": [320, 300],
+      "inputs": [
+        { "name": "model", "type": "MODEL", "link": 1, "slot_index": 0 },
+        { "name": "positive", "type": "CONDITIONING", "link": 5, "slot_index": 1 },
+        { "name": "negative", "type": "CONDITIONING", "link": 6, "slot_index": 2 },
+        { "name": "latent_image", "type": "LATENT", "link": 7, "slot_index": 3 }
+      ],
+      "outputs": [
+        { "name": "LATENT", "type": "LATENT", "links": [8] }
+      ],
+      "properties": { "Node name for S&R": "KSampler" },
+      "widgets_values": [0, "randomize", 10, 1.0, "euler", "simple", 1.0],
+      "class_type": "KSampler"
+    },
+    {
+      "id": 8,
+      "type": "VAEDecode",
+      "pos": [580, 220],
+      "size": [240, 70],
+      "inputs": [
+        { "name": "samples", "type": "LATENT", "link": 8, "slot_index": 0 },
+        { "name": "vae", "type": "VAE", "link": 4, "slot_index": 1 }
+      ],
+      "outputs": [
+        { "name": "IMAGE", "type": "IMAGE", "links": [9] }
+      ],
+      "properties": { "Node name for S&R": "VAEDecode" },
+      "widgets_values": [],
+      "class_type": "VAEDecode"
+    },
+    {
+      "id": 9,
+      "type": "SaveImage",
+      "pos": [880, 180],
+      "size": [320, 280],
+      "inputs": [
+        { "name": "images", "type": "IMAGE", "link": 9, "slot_index": 0 }
+      ],
+      "outputs": [],
+      "properties": { "Node name for S&R": "SaveImage" },
+      "widgets_values": ["sprite_anima_turbo"],
+      "class_type": "SaveImage"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 7, 0, "MODEL"],
+    [2, 2, 0, 4, 0, "CLIP"],
+    [3, 2, 0, 5, 0, "CLIP"],
+    [4, 3, 0, 8, 1, "VAE"],
+    [5, 4, 0, 7, 1, "CONDITIONING"],
+    [6, 5, 0, 7, 2, "CONDITIONING"],
+    [7, 6, 0, 7, 3, "LATENT"],
+    [8, 7, 0, 8, 0, "LATENT"],
+    [9, 8, 0, 9, 0, "IMAGE"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "workflow_info": {
+      "name": "Galgame sprite, Anima Turbo v1.1",
+      "note": "Change the expression words in the positive prompt for another face. This does not lock the same face across images and does not use Pose Studio. Models: anima-turbo-v1.1, qwen_3_06b_base, qwen_image_vae."
+    }
+  },
+  "version": 0.4
+}

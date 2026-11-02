@@ -349,11 +349,16 @@ screen main_menu():
     ## 视频播完后自动停在最后一帧（不传 image 参数）
     add Movie(play="videos/logo_1.mp4", loop=False, image="images/backgrounds/fire_woods_5.png") xalign 0.5 yalign 0.5 zoom 0.5
 
-    ## 简单 "开始游戏" 按钮 (只此一个) — 点击进入章节选择界面
-    textbutton _("开始游戏"):
+    vbox:
         xalign 0.5
-        yalign 0.88
-        action Start("act2")
+        yalign 0.86
+        spacing 18
+        textbutton _("开始第一章"):
+            xalign 0.5
+            action Start("act2")
+        textbutton _("开始第二章（生日快乐🍰）"):
+            xalign 0.5
+            action Start("act3")
 
 
 style main_menu_frame is empty

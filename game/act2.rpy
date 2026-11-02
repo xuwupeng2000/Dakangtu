@@ -43,7 +43,7 @@ transform right_pos:
 label act2:
 
     # BGM: 进入 act2 开始循环播放
-    play music "audio/bgm/bgm_new.ogg" volume 0.5 loop fadein 2.0
+    play music "audio/bgm/bgm_act2_1.ogg" loop fadein 2.0
 
     scene black
     with Pause(1.0)

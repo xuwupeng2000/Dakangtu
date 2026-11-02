@@ -1,0 +1,197 @@
+{
+  "last_node_id": 13,
+  "last_link_id": 14,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [-820, 40],
+      "size": [340, 90],
+      "inputs": [],
+      "outputs": [{ "name": "MODEL", "type": "MODEL", "links": [1] }],
+      "properties": { "Node name for S&R": "UNETLoader" },
+      "widgets_values": ["anima-turbo-v1.1.safetensors", "default"],
+      "class_type": "UNETLoader"
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [-820, 170],
+      "size": [340, 110],
+      "inputs": [],
+      "outputs": [{ "name": "CLIP", "type": "CLIP", "links": [2, 3] }],
+      "properties": { "Node name for S&R": "CLIPLoader" },
+      "widgets_values": ["qwen_3_06b_base.safetensors", "qwen_image"],
+      "class_type": "CLIPLoader"
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [-820, 330],
+      "size": [340, 80],
+      "inputs": [],
+      "outputs": [{ "name": "VAE", "type": "VAE", "links": [4, 5] }],
+      "properties": { "Node name for S&R": "VAELoader" },
+      "widgets_values": ["qwen_image_vae.safetensors"],
+      "class_type": "VAELoader"
+    },
+    {
+      "id": 4,
+      "type": "LoadImage",
+      "pos": [-820, 460],
+      "size": [340, 300],
+      "inputs": [],
+      "outputs": [
+        { "name": "IMAGE", "type": "IMAGE", "links": [6] },
+        { "name": "MASK", "type": "MASK", "links": null }
+      ],
+      "properties": { "Node name for S&R": "LoadImage" },
+      "widgets_values": ["ami_ref_dry_base.png"],
+      "title": "定妆，衣服和姿势锁在这张上",
+      "class_type": "LoadImage"
+    },
+    {
+      "id": 5,
+      "type": "LoadImage",
+      "pos": [-820, 800],
+      "size": [340, 300],
+      "inputs": [],
+      "outputs": [
+        { "name": "IMAGE", "type": "IMAGE", "links": [7] },
+        { "name": "MASK", "type": "MASK", "links": null }
+      ],
+      "properties": { "Node name for S&R": "LoadImage" },
+      "widgets_values": ["ami_face_mask.png"],
+      "title": "白=要改的地方，黑=原样保留",
+      "class_type": "LoadImage"
+    },
+    {
+      "id": 6,
+      "type": "ImageToMask",
+      "pos": [-420, 820],
+      "size": [280, 70],
+      "inputs": [{ "name": "image", "type": "IMAGE", "link": 7 }],
+      "outputs": [{ "name": "MASK", "type": "MASK", "links": [8] }],
+      "properties": { "Node name for S&R": "ImageToMask" },
+      "widgets_values": ["red"],
+      "class_type": "ImageToMask"
+    },
+    {
+      "id": 7,
+      "type": "VAEEncode",
+      "pos": [-420, 500],
+      "size": [280, 70],
+      "inputs": [
+        { "name": "pixels", "type": "IMAGE", "link": 6 },
+        { "name": "vae", "type": "VAE", "link": 4 }
+      ],
+      "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [9] }],
+      "properties": { "Node name for S&R": "VAEEncode" },
+      "widgets_values": [],
+      "class_type": "VAEEncode"
+    },
+    {
+      "id": 8,
+      "type": "SetLatentNoiseMask",
+      "pos": [-420, 620],
+      "size": [280, 70],
+      "inputs": [
+        { "name": "samples", "type": "LATENT", "link": 9 },
+        { "name": "mask", "type": "MASK", "link": 8 }
+      ],
+      "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [10] }],
+      "properties": { "Node name for S&R": "SetLatentNoiseMask" },
+      "widgets_values": [],
+      "class_type": "SetLatentNoiseMask"
+    },
+    {
+      "id": 9,
+      "type": "CLIPTextEncode",
+      "pos": [-420, 40],
+      "size": [420, 200],
+      "inputs": [{ "name": "clip", "type": "CLIP", "link": 2 }],
+      "outputs": [{ "name": "CONDITIONING", "type": "CONDITIONING", "links": [11] }],
+      "properties": { "Node name for S&R": "CLIPTextEncode" },
+      "widgets_values": ["same girl, both eyes squeezed shut, crying, tears, same black coat, same hair, same rabbit hair clip"],
+      "title": "只写要改的表情",
+      "class_type": "CLIPTextEncode"
+    },
+    {
+      "id": 10,
+      "type": "CLIPTextEncode",
+      "pos": [-420, 280],
+      "size": [420, 140],
+      "inputs": [{ "name": "clip", "type": "CLIP", "link": 3 }],
+      "outputs": [{ "name": "CONDITIONING", "type": "CONDITIONING", "links": [12] }],
+      "properties": { "Node name for S&R": "CLIPTextEncode" },
+      "widgets_values": ["wink, one eye open, different clothes, different hair, text, watermark"],
+      "class_type": "CLIPTextEncode"
+    },
+    {
+      "id": 11,
+      "type": "KSampler",
+      "pos": [80, 200],
+      "size": [320, 300],
+      "inputs": [
+        { "name": "model", "type": "MODEL", "link": 1 },
+        { "name": "positive", "type": "CONDITIONING", "link": 11 },
+        { "name": "negative", "type": "CONDITIONING", "link": 12 },
+        { "name": "latent_image", "type": "LATENT", "link": 10 }
+      ],
+      "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [13] }],
+      "properties": { "Node name for S&R": "KSampler" },
+      "widgets_values": [0, "randomize", 10, 1.0, "euler", "simple", 0.62],
+      "class_type": "KSampler"
+    },
+    {
+      "id": 12,
+      "type": "VAEDecode",
+      "pos": [460, 240],
+      "size": [240, 70],
+      "inputs": [
+        { "name": "samples", "type": "LATENT", "link": 13 },
+        { "name": "vae", "type": "VAE", "link": 5 }
+      ],
+      "outputs": [{ "name": "IMAGE", "type": "IMAGE", "links": [14] }],
+      "properties": { "Node name for S&R": "VAEDecode" },
+      "widgets_values": [],
+      "class_type": "VAEDecode"
+    },
+    {
+      "id": 13,
+      "type": "SaveImage",
+      "pos": [740, 180],
+      "size": [320, 270],
+      "inputs": [{ "name": "images", "type": "IMAGE", "link": 14 }],
+      "outputs": [],
+      "properties": { "Node name for S&R": "SaveImage" },
+      "widgets_values": ["sprite_ami_face_lock"],
+      "class_type": "SaveImage"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 11, 0, "MODEL"],
+    [2, 2, 0, 9, 0, "CLIP"],
+    [3, 2, 0, 10, 0, "CLIP"],
+    [4, 3, 0, 7, 1, "VAE"],
+    [5, 3, 0, 12, 1, "VAE"],
+    [6, 4, 0, 7, 0, "IMAGE"],
+    [7, 5, 0, 6, 0, "IMAGE"],
+    [8, 6, 0, 8, 1, "MASK"],
+    [9, 7, 0, 8, 0, "LATENT"],
+    [10, 8, 0, 11, 3, "LATENT"],
+    [11, 9, 0, 11, 1, "CONDITIONING"],
+    [12, 10, 0, 11, 2, "CONDITIONING"],
+    [13, 11, 0, 12, 0, "LATENT"],
+    [14, 12, 0, 13, 0, "IMAGE"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "workflow_info": {
+      "name": "表情只改脸，衣服和姿势锁定",
+      "note": "定妆图整张编码，蒙版白色的地方才去噪。大衣、头发、手在蒙版外面，像素不动。KSampler 最后一个数是脸上的 denoise。换表情只改正面提示词和蒙版。"
+    }
+  },
+  "version": 0.4
+}

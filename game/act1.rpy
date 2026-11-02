@@ -58,7 +58,7 @@ label act1:
     $ current_time = "night"
 
     # BGM: 进入 act1 开始循环播放
-    play music "audio/bgm/bgm.ogg" volume 0.5 loop fadein 2.0
+    play music "audio/bgm/bgm.ogg" loop fadein 2.0
 
     # ----------------- 标题 -----------------
     scene black

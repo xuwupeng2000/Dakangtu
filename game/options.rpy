@@ -21,7 +21,7 @@ define gui.show_name = True
 
 ## 游戏版本号。
 
-define config.version = "1.3"
+define config.version = "1.5"
 
 
 ## 屏幕尺寸 - 强制 16:9 全屏 1920x1080
@@ -50,6 +50,14 @@ define build.name = "Dakangtu"
 define config.has_sound = True
 define config.has_music = True
 define config.has_voice = True
+
+## 音乐默认放低，大约 -20 dB，垫在对白下面。设置里的音乐滑条仍可调高。
+define config.default_music_volume = 0.5
+
+init 999 python:
+    if not persistent.music_quiet_default:
+        persistent.music_quiet_default = True
+        _preferences.set_mixer("music", config.default_music_volume)
 
 
 ## 为了让用户在音效或语音轨道上播放测试音频，请取消对下面一行的注释并设置播放的

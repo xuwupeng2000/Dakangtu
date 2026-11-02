@@ -64,6 +64,12 @@ screen chapter_select():
         action [Hide("main_menu"), Jump("act2")]
         at character_select_size
 
+    # 第三章入口。左右两张立绘仍是第一幕、第二幕。
+    textbutton _("第三章  雨落星河"):
+        xalign 0.5
+        yalign 0.06
+        action [Hide("main_menu"), Jump("act3")]
+
     # 返回主菜单按钮
     textbutton _("返回主菜单"):
         xalign 0.5

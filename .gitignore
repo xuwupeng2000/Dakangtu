@@ -36,3 +36,5 @@ models/sam3_dl/checkpoints/sam3.1_multiplex_fp16.safetensors
 /references
 .vscode/settings.json
 /.vscode
+.DS_Store
+progressive_download.txt

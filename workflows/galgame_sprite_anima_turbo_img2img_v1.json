@@ -1,0 +1,181 @@
+{
+  "last_node_id": 10,
+  "last_link_id": 11,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [-760, 40],
+      "size": [340, 90],
+      "inputs": [],
+      "outputs": [
+        { "name": "MODEL", "type": "MODEL", "links": [1] }
+      ],
+      "properties": { "Node name for S&R": "UNETLoader" },
+      "widgets_values": ["anima-turbo-v1.1.safetensors", "default"],
+      "class_type": "UNETLoader"
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [-760, 180],
+      "size": [340, 110],
+      "inputs": [],
+      "outputs": [
+        { "name": "CLIP", "type": "CLIP", "links": [2, 3] }
+      ],
+      "properties": { "Node name for S&R": "CLIPLoader" },
+      "widgets_values": ["qwen_3_06b_base.safetensors", "qwen_image"],
+      "class_type": "CLIPLoader"
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [-760, 340],
+      "size": [340, 80],
+      "inputs": [],
+      "outputs": [
+        { "name": "VAE", "type": "VAE", "links": [4, 5] }
+      ],
+      "properties": { "Node name for S&R": "VAELoader" },
+      "widgets_values": ["qwen_image_vae.safetensors"],
+      "class_type": "VAELoader"
+    },
+    {
+      "id": 4,
+      "type": "LoadImage",
+      "pos": [-760, 480],
+      "size": [340, 320],
+      "inputs": [],
+      "outputs": [
+        { "name": "IMAGE", "type": "IMAGE", "links": [6] },
+        { "name": "MASK", "type": "MASK", "links": null }
+      ],
+      "properties": { "Node name for S&R": "LoadImage" },
+      "widgets_values": ["ami_ref_gold.png"],
+      "class_type": "LoadImage",
+      "title": "参考图"
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [-360, 20],
+      "size": [460, 260],
+      "inputs": [
+        { "name": "clip", "type": "CLIP", "link": 2, "slot_index": 0 }
+      ],
+      "outputs": [
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [7] }
+      ],
+      "properties": { "Node name for S&R": "CLIPTextEncode" },
+      "widgets_values": [
+        "masterpiece, best quality, score_7, anime, 2D galgame character sprite, one girl, half body, thighs-up, completely dry, dry hair, dry clothes, matte fabric, petite short woman, 155cm, very round face, full round cheeks, short thick neck, gentle closed-mouth smile, long straight black hair, straight bangs, large brown eyes, very large breasts, deep cleavage, white low-cut top, black wool overcoat, gold trim sewn along the collar edge and both lapels, coat hem at upper thigh, thighs visible, cute white rabbit-head hair clip on the bangs, plain mid gray background, clean lineart"
+      ],
+      "class_type": "CLIPTextEncode",
+      "title": "正面提示词"
+    },
+    {
+      "id": 6,
+      "type": "CLIPTextEncode",
+      "pos": [-360, 320],
+      "size": [460, 180],
+      "inputs": [
+        { "name": "clip", "type": "CLIP", "link": 3, "slot_index": 0 }
+      ],
+      "outputs": [
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [8] }
+      ],
+      "properties": { "Node name for S&R": "CLIPTextEncode" },
+      "widgets_values": [
+        "wet, soaked, rain, water droplets, thin neck, long neck, oval face, long face, sharp jaw, small breasts, flat chest, floor-length coat, plain black collar without trim, bad quality, worst quality, low quality, score_1, score_2, score_3, blurry, extra fingers, bad hands, multiple girls, text, watermark, photorealistic, 3d, tall woman"
+      ],
+      "class_type": "CLIPTextEncode",
+      "title": "负面提示词"
+    },
+    {
+      "id": 7,
+      "type": "VAEEncode",
+      "pos": [-360, 540],
+      "size": [280, 70],
+      "inputs": [
+        { "name": "pixels", "type": "IMAGE", "link": 6, "slot_index": 0 },
+        { "name": "vae", "type": "VAE", "link": 4, "slot_index": 1 }
+      ],
+      "outputs": [
+        { "name": "LATENT", "type": "LATENT", "links": [9] }
+      ],
+      "properties": { "Node name for S&R": "VAEEncode" },
+      "widgets_values": [],
+      "class_type": "VAEEncode"
+    },
+    {
+      "id": 8,
+      "type": "KSampler",
+      "pos": [180, 160],
+      "size": [320, 300],
+      "inputs": [
+        { "name": "model", "type": "MODEL", "link": 1, "slot_index": 0 },
+        { "name": "positive", "type": "CONDITIONING", "link": 7, "slot_index": 1 },
+        { "name": "negative", "type": "CONDITIONING", "link": 8, "slot_index": 2 },
+        { "name": "latent_image", "type": "LATENT", "link": 9, "slot_index": 3 }
+      ],
+      "outputs": [
+        { "name": "LATENT", "type": "LATENT", "links": [10] }
+      ],
+      "properties": { "Node name for S&R": "KSampler" },
+      "widgets_values": [0, "randomize", 10, 1.0, "euler", "simple", 0.45],
+      "class_type": "KSampler"
+    },
+    {
+      "id": 9,
+      "type": "VAEDecode",
+      "pos": [560, 220],
+      "size": [240, 70],
+      "inputs": [
+        { "name": "samples", "type": "LATENT", "link": 10, "slot_index": 0 },
+        { "name": "vae", "type": "VAE", "link": 5, "slot_index": 1 }
+      ],
+      "outputs": [
+        { "name": "IMAGE", "type": "IMAGE", "links": [11] }
+      ],
+      "properties": { "Node name for S&R": "VAEDecode" },
+      "widgets_values": [],
+      "class_type": "VAEDecode"
+    },
+    {
+      "id": 10,
+      "type": "SaveImage",
+      "pos": [860, 180],
+      "size": [320, 280],
+      "inputs": [
+        { "name": "images", "type": "IMAGE", "link": 11, "slot_index": 0 }
+      ],
+      "outputs": [],
+      "properties": { "Node name for S&R": "SaveImage" },
+      "widgets_values": ["sprite_ami_blackcoat"],
+      "class_type": "SaveImage"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 8, 0, "MODEL"],
+    [2, 2, 0, 5, 0, "CLIP"],
+    [3, 2, 0, 6, 0, "CLIP"],
+    [4, 3, 0, 7, 1, "VAE"],
+    [5, 3, 0, 9, 1, "VAE"],
+    [6, 4, 0, 7, 0, "IMAGE"],
+    [7, 5, 0, 8, 1, "CONDITIONING"],
+    [8, 6, 0, 8, 2, "CONDITIONING"],
+    [9, 7, 0, 8, 3, "LATENT"],
+    [10, 8, 0, 9, 0, "LATENT"],
+    [11, 9, 0, 10, 0, "IMAGE"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "workflow_info": {
+      "name": "Ami 半身立绘，Anima Turbo 参考图",
+      "note": "LoadImage 换成你要参考的图。KSampler 最后一个数是 denoise：越低越像参考图，0.45 左右改领口和脸。模型 anima-turbo-v1.1，文本编码器 qwen_3_06b_base，VAE qwen_image_vae。10 步，cfg 1，euler / simple。"
+    }
+  },
+  "version": 0.4
+}

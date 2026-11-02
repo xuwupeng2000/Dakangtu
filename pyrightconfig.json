@@ -1,11 +1,11 @@
 {
     "include": ["game/**/*.py", "game/**/*.rpy"],
     "exclude": ["**/cache", "**/saves", "**/*.rpyc", "**/*.rpymc"],
-    "venvPath": "C:\\Users\\jwu40\\Downloads\\renpy-8.5.3-sdk\\lib",
+    "venvPath": "/Users/pengwu/Applications/renpy-8.5.3-sdkarm/lib",
     "pythonVersion": "3.12",
-    "pythonPlatform": "Windows",
+    "pythonPlatform": "Darwin",
     "extraPaths": [
-        "C:\\Users\\jwu40\\Downloads\\renpy-8.5.3-sdk"
+        "/Users/pengwu/Applications/renpy-8.5.3-sdkarm"
     ],
     "typeCheckingMode": "basic",
     "reportMissingImports": true,
