@@ -203,4 +203,4 @@ init python:
 
 ## 与 itch.io 项目相关的用户名和项目名，以 / 分隔。
 
-# define build.itch_project = "renpytom/test-project"
+define build.itch_project = "xuwupeng2000/dakangtu"

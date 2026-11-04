@@ -4,7 +4,43 @@
 
 游戏本体基于 **Ren'Py** 引擎编写，剧情围绕两段跨越数十年的异地重逢展开。所有的角色立绘、场景背景、封面图均由本地 ComfyUI 流水线生成，是研究 SDXL / Z-Image / Anima / Wan 2.2 等不同 DiT 架构在视觉小说场景下表现差异的实验载体。
 
-> 当前进度：Act 1「落日和明天」+ Act 2「相见有期」剧本定稿，立绘/背景图持续生成中。
+> 当前版本 **1.5**。Act 1「落日和明天」、Act 2「相见有期」、Act 3「雨落星河」都已进游戏。主菜单从「开始第一章」（Act 2）和「开始第二章（生日快乐）」（Act 3）进入。
+
+在浏览器里玩：[xuwupeng2000.itch.io/dakangtu](https://xuwupeng2000.itch.io/dakangtu)
+
+---
+
+## 画面
+
+第三幕的场景和 CG，直接用 `game/images/` 里的原图。
+
+<p align="center">
+  <img src="game/images/cg/act3/cg_southern_cross.png" alt="山顶，南十字" width="900">
+  <br>山顶，南十字
+</p>
+
+<p align="center">
+  <img src="game/images/backgrounds/act3/bg_eden_night.png" alt="月下山路" width="440">
+  <img src="game/images/backgrounds/act3/bg_bedroom_night.png" alt="夜里看消息" width="440">
+  <br>月下山路 · 夜里看消息
+</p>
+
+<p align="center">
+  <img src="game/images/cg/act3/cg_kneel_rain.png" alt="雨里" width="440">
+  <img src="game/images/backgrounds/act3/bg_car_stars.png" alt="雨停后的后座" width="440">
+  <br>雨里 · 雨停后的后座
+</p>
+
+<p align="center">
+  <img src="game/images/cg/act3/cg_kiss_car_rain.png" alt="后座" width="900">
+  <br>后座
+</p>
+
+<p align="center">
+  <img src="game/images/characters/ami_adult/ami_smile.png" alt="Ami" width="280">
+  <img src="game/images/characters/jack/jack_smile.png" alt="Jack" width="280">
+  <br>Ami · Jack
+</p>
 
 ---
 
@@ -76,15 +112,20 @@ Dakangtu/
 ├── game/                          # Ren'Py 项目根
 │   ├── script.rpy                 # 游戏入口
 │   ├── screens.rpy                # 屏幕（主菜单/对话/quick_menu）
-│   ├── characters.rpy             # 角色定义（LX / Jack / AMI / Rita）
+│   ├── characters.rpy             # 角色定义（LX / Jack / Ami / Rita）
 │   ├── chapter_select.rpy         # 章节选择屏幕
 │   ├── act1.rpy                   # 第一幕「落日和明天」
 │   ├── act2.rpy                   # 第二幕「相见有期」
+│   ├── act3.rpy                   # 第三幕「雨落星河」
 │   ├── gui/                       # UI 资源（封面/按钮）
 │   ├── images/
-│   │   ├── backgrounds/           # 场景背景
-│   │   ├── characters/rita/       # Rita 立绘（去背后）
-│   │   └── characters/ami/        # AMI 立绘
+│   │   ├── backgrounds/act3/      # 卧室、山路、山顶、暴雨、后座
+│   │   ├── cg/act3/               # 南十字、雨中、后座
+│   │   ├── characters/ami/        # Act 2 Ami
+│   │   ├── characters/ami_adult/  # Act 3 Ami
+│   │   ├── characters/ami_soaked/ # 淋雨后的 Ami
+│   │   ├── characters/jack/       # Jack 半身
+│   │   └── characters/rita/       # Act 1，暂作 LX
 │   ├── audio/voice/               # 角色语音 (lx1.ogg 等)
 │   └── videos/                    # 主菜单 logo 视频
 ├── workflows/                     # ComfyUI 工作流 JSON（12+）
