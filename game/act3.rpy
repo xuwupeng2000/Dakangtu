@@ -146,14 +146,10 @@ screen act3_poem():
             text "我们在来时的路上 把重逢约在同一颗星星下" size 32 xalign 0.5 color "#efe8dc"
             null height 160
     if show_button:
-        button:
+        textbutton "游戏结束":
             xalign 0.5
             yalign 0.86
-            background Solid("#6b3a3a")
-            hover_background Solid("#8a4a4a")
-            padding (40, 16)
             action Function(act3_return_menu)
-            text "生日快乐" size 40 color "#fff6e8" xalign 0.5
     if not show_button:
         key "dismiss" action NullAction()
     timer 46.0 action SetScreenVariable("show_button", True)
@@ -167,13 +163,9 @@ screen act3_birthday(caption, title=""):
         spacing 56
         if title:
             text title size 40 xalign 0.5 color "#efe8dc"
-        button:
+        textbutton caption:
             xalign 0.5
-            background Solid("#6b3a3a")
-            hover_background Solid("#8a4a4a")
-            padding (40, 18)
             action Function(act3_return_menu)
-            text caption size 42 color "#fff6e8" xalign 0.5
 
 
 label act3:
@@ -1013,7 +1005,7 @@ label act3_neutral:
     with dissolve
 
     window hide
-    call screen act3_birthday("生日快乐！！！", "【次好结局 🐰 改天再见】")
+    call screen act3_birthday("游戏结束", "【次好结局 🐰 改天再见】")
     window auto
 
     stop music fadeout 2.0
