@@ -148,7 +148,6 @@ Act 1 的成图还在 `game/images/backgrounds/act1/` 和 `game/images/character
 
 ---
 
-## 项目结构
 
 ```
 Dakangtu/
