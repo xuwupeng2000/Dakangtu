@@ -105,40 +105,7 @@
 
 ---
 
-## 项目结构
 
-```
-Dakangtu/
-├── game/                          # Ren'Py 项目根
-│   ├── script.rpy                 # 游戏入口
-│   ├── screens.rpy                # 屏幕（主菜单/对话/quick_menu）
-│   ├── characters.rpy             # 角色定义（LX / Jack / Ami / Rita）
-│   ├── chapter_select.rpy         # 章节选择屏幕
-│   ├── act1.rpy                   # 第一幕「落日和明天」
-│   ├── act2.rpy                   # 第二幕「相见有期」
-│   ├── act3.rpy                   # 第三幕「雨落星河」
-│   ├── gui/                       # UI 资源（封面/按钮）
-│   ├── images/
-│   │   ├── backgrounds/act3/      # 卧室、山路、山顶、暴雨、后座
-│   │   ├── cg/act3/               # 南十字、雨中、后座
-│   │   ├── characters/ami/        # Act 2 Ami
-│   │   ├── characters/ami_adult/  # Act 3 Ami
-│   │   ├── characters/ami_soaked/ # 淋雨后的 Ami
-│   │   ├── characters/jack/       # Jack 半身
-│   │   └── characters/rita/       # Act 1，暂作 LX
-│   ├── audio/voice/               # 角色语音 (lx1.ogg 等)
-│   └── videos/                    # 主菜单 logo 视频
-├── workflows/                     # ComfyUI 工作流 JSON（12+）
-│   ├── galgame_bg_*.json          # 背景生成
-│   ├── galgame_zimage_*.json      # z-image 系（pixel art / inpaint）
-│   ├── galgame_sdxl_*.json        # SDXL 对比
-│   ├── galgame_anima_*.json       # Anima 角色 / 封面
-│   ├── galgame_wan22_*.json       # Wan 2.2 动态背景
-│   └── VNCCS_3.0_new_char_creator.json
-├── tools/                         # 辅助脚本
-```
-
----
 
 ## 快速开始
 
