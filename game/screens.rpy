@@ -356,7 +356,7 @@ screen main_menu():
         textbutton _("开始第一章"):
             xalign 0.5
             action Start("act2")
-        textbutton _("开始第二章（生日快乐🍰）"):
+        textbutton _("开始第二章"):
             xalign 0.5
             action Start("act3")
 
